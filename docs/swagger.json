@@ -1,0 +1,76 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Desafio CEP API",
+    "description": "API para busca de CEP com race condition entre BrasilAPI e ViaCEP. Retorna a resposta mais rápida.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000"
+    }
+  ],
+  "paths": {
+    "/cep/{cep}": {
+      "get": {
+        "summary": "Buscar CEP",
+        "description": "Busca informações de um CEP fazendo requisições paralelas às APIs BrasilAPI e ViaCEP. Retorna a resposta mais rápida com timeout de 1 segundo.",
+        "operationId": "getCEP",
+        "parameters": [
+          {
+            "name": "cep",
+            "in": "path",
+            "description": "CEP no formato XXXXXXXX (8 dígitos)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "01153000"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "CEP encontrado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "source": {
+                      "type": "string",
+                      "description": "API que retornou a resposta (BrasilAPI ou ViaCEP)",
+                      "example": "BrasilAPI"
+                    },
+                    "latency": {
+                      "type": "string",
+                      "description": "Tempo de resposta da API",
+                      "example": "125ms"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "Dados do endereço (estrutura varia conforme a API)",
+                      "properties": {
+                        "cep": { "type": "string", "example": "01153000" },
+                        "logradouro": { "type": "string", "example": "Avenida Paulista" },
+                        "bairro": { "type": "string", "example": "Centro" },
+                        "cidade": { "type": "string", "example": "São Paulo" },
+                        "uf": { "type": "string", "example": "SP" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "CEP não fornecido"
+          },
+          "504": {
+            "description": "Timeout de 1 segundo excedido - nenhuma API respondeu a tempo"
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

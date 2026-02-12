@@ -1,0 +1,16 @@
+// Test file for CEP API requests
+
+### Test 1: Search CEP 01153000 (São Paulo - Avenida Paulista)
+GET http://localhost:8000/cep/01153000
+
+### Test 2: Search CEP 20040020 (Rio de Janeiro)
+GET http://localhost:8000/cep/20040020
+
+### Test 3: Search CEP 30130100 (Belo Horizonte)
+GET http://localhost:8000/cep/30130100
+
+### Test 4: Search CEP 70040902 (Brasília)
+GET http://localhost:8000/cep/70040902
+
+### Test 5: Search with invalid CEP (should timeout or return error)
+GET http://localhost:8000/cep/00000000

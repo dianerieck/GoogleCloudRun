@@ -1,0 +1,38 @@
+openapi: 3.0.0
+info:
+  title: Desafio CEP API
+  description: API para busca de CEP - documentação mínima gerada automaticamente
+  version: "1.0.0"
+servers:
+  - url: http://localhost:8000
+paths:
+  /cep/{cep}:
+    get:
+      summary: Buscar CEP
+      parameters:
+        - name: cep
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: CEP encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cep:
+                    type: string
+                  logradouro:
+                    type: string
+                  bairro:
+                    type: string
+                  cidade:
+                    type: string
+                  uf:
+                    type: string
+        '404':
+          description: CEP não encontrado
+components: {}
