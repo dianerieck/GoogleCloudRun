@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/dianerieck/CURSO-GO/11-DESAFIO-CEP/internal/dto"
+	"github.com/dianerieck/Multithreading-Golang/internal/dto"
 )
 
 func TestFetchCEPRaceWithValidCEP(t *testing.T) {

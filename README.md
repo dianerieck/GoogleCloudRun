@@ -37,7 +37,7 @@ A aplicação:
 ## Como executar o projeto e Clonar o repositório
 
 ```bash
-git clone https://github.com/dianerieck/DESAFIO-CEP
+git clone https://github.com/dianerieck/Multithreading-Golang
 cd seu-repo
 
 Rodar aplicação

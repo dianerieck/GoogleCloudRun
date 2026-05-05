@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/dianerieck/CURSO-GO/11-DESAFIO-CEP/internal/dto"
+	"github.com/dianerieck/Multithreading-Golang/internal/dto"
 )
 
 func fetchFromBrasilAPI(cep string, ch chan<- *apiResult) {

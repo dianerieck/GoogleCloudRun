@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"net/http"
 
-	_ "github.com/dianerieck/CURSO-GO/11-DESAFIO-CEP/docs"
+	_ "github.com/dianerieck/Multithreading-Golang/docs"
 	httpSwagger "github.com/swaggo/http-swagger"
 
-	"github.com/dianerieck/CURSO-GO/11-DESAFIO-CEP/internal/service"
+	"github.com/dianerieck/Multithreading-Golang/internal/service"
 	"github.com/go-chi/chi/v5"
 )
 
