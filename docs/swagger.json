@@ -1,21 +1,17 @@
 {
-  "openapi": "3.0.0",
+  "swagger": "2.0",
   "info": {
-    "title": "Desafio CEP API",
-    "description": "API para busca de CEP com race condition entre BrasilAPI e ViaCEP. Retorna a resposta mais rápida.",
+    "title": "Deploy com Cloud Run - golang",
+    "description": "API para buscar o clima atual pelo CEP",
     "version": "1.0.0"
   },
-  "servers": [
-    {
-      "url": "http://localhost:8000"
-    }
-  ],
+  "host": "localhost:8080",
   "paths": {
     "/cep/{cep}": {
-      "get": {
-        "summary": "Buscar CEP",
-        "description": "Busca informações de um CEP fazendo requisições paralelas às APIs BrasilAPI e ViaCEP. Retorna a resposta mais rápida com timeout de 1 segundo.",
-        "operationId": "getCEP",
+      "get": {        
+        "summary": "Buscar Clima",
+        "description": "Busca informações do clima atual da cidade.",
+        "operationId": "GetTemperatura",
         "parameters": [
           {
             "name": "cep",
@@ -31,39 +27,20 @@
         "responses": {
           "200": {
             "description": "CEP encontrado com sucesso",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "source": {
-                      "type": "string",
-                      "description": "API que retornou a resposta (BrasilAPI ou ViaCEP)",
-                      "example": "BrasilAPI"
-                    },
-                    "latency": {
-                      "type": "string",
-                      "description": "Tempo de resposta da API",
-                      "example": "125ms"
-                    },
-                    "data": {
-                      "type": "object",
-                      "description": "Dados do endereço (estrutura varia conforme a API)",
-                      "properties": {
-                        "cep": { "type": "string", "example": "01153000" },
-                        "logradouro": { "type": "string", "example": "Avenida Paulista" },
-                        "bairro": { "type": "string", "example": "Centro" },
-                        "cidade": { "type": "string", "example": "São Paulo" },
-                        "uf": { "type": "string", "example": "SP" }
-                      }
-                    }
-                  }
-                }
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Temp_C": { "type": "number", "format": "float", "example": 22.5 },
+                "Temp_F": { "type": "number", "format": "float", "example": 72.5 },
+                "Temp_K": { "type": "number", "format": "float", "example": 295.65 }
               }
             }
           },
-          "400": {
-            "description": "CEP não fornecido"
+          "404": {
+            "description": "can not find zipcode"
+          },
+          "422": {
+            "description": "invalid zipcode"
           },
           "504": {
             "description": "Timeout de 1 segundo excedido - nenhuma API respondeu a tempo"
@@ -71,6 +48,5 @@
         }
       }
     }
-  },
-  "components": {}
+  }  
 }

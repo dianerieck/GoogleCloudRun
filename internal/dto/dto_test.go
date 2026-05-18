@@ -2,48 +2,22 @@ package dto
 
 import "testing"
 
-func TestBrasilAPIResponse(t *testing.T) {
-	response := &BrasilAPIResponse{
-		Cep:          "01153000",
-		State:        "SP",
-		City:         "São Paulo",
-		Neighborhood: "Centro",
-		Street:       "Avenida Paulista",
-		Service:      "brasilapi",
-	}
-
-	if response.Cep != "01153000" {
-		t.Errorf("CEP esperado: 01153000, obtido: %s", response.Cep)
-	}
-
-	if response.City != "São Paulo" {
-		t.Errorf("Cidade esperada: São Paulo, obtida: %s", response.City)
-	}
-}
-
-func TestViaCEPResponse(t *testing.T) {
+func TestGetCidadeRequest(t *testing.T) {
 	response := &ViaCEPResponse{
-		Cep:        "01153000",
-		Logradouro: "Avenida Paulista",
-		Bairro:     "Centro",
-		Localidade: "São Paulo",
-		Uf:         "SP",
-		Ibge:       "3550308",
-		Ddd:        "11",
-		Erro:       false,
+		Localidade: "Erechim",
+	}
+	if response.Localidade != "Erechim" {
+		t.Errorf("Expected Localidade to be 'Ereckim', got '%s'", response.Localidade)
+	}
+	response2 := &WeatherResponse{
+		Current: struct {
+			Temp_C float64 `json:"temp_c"`
+		}{
+			Temp_C: 20,
+		},
+	}
+	if response2.Current.Temp_C != 20 {
+		t.Errorf("Expected Temp_C to be 0, got '%f'", response2.Current.Temp_C)
 	}
 
-	if response.Cep != "01153000" {
-		t.Errorf("CEP esperado: 01153000, obtido: %s", response.Cep)
-	}
-
-	if response.Uf != "SP" {
-		t.Errorf("UF esperado: SP, obtido: %s", response.Uf)
-	}
-
-	if response.Erro {
-		t.Errorf("Erro não era esperado")
-	}
 }
-
-// Removed TestResultStructure because generic Result was removed

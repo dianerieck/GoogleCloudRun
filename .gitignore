@@ -1,0 +1,14 @@
+# Binários
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+bin/
+
+# Configurações sensíveis
+.env
+
+# Ferramentas e IDEs
+.vscode/
+.idea/

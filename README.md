@@ -1,70 +1,58 @@
-# Desafio CEP - Multithreading com Go
-
-Projeto desenvolvido em Golang para buscar informações de endereço a partir de um CEP para consultar múltiplas APIs simultaneamente e retornar a resposta mais rápida.
-
-Este projeto foi criado como solução para um desafio técnico envolvendo:
-
-- Multithreading em Go
-- Consumo de APIs externas
-- Controle de timeout
-- Race condition entre serviços
+## Sistema de Clima por CEP - Go + Cloud Run
+Aplicação desenvolvida em Golang que recebe um CEP válido de 8 dígitos, identifica a cidade correspondente e retorna o clima atual (temperatura em Celsius, Fahrenheit e Kelvin).
+O sistema está publicado e acessível no Google Cloud Run.
 
 ---
 
-## Objetivo
-
-Realizar requisições simultâneas para duas APIs públicas de CEP:
-
-- https://brasilapi.com.br
-- http://viacep.com.br
-
-A aplicação:
-
-- Executa chamadas em paralelo  
-- Retorna a resposta da API mais rápida  
-- Descarta a resposta mais lenta  
-- Limita o tempo total de resposta em 1 segundo  
-
+## Requisitos Funcionais
+- Entrada: CEP válido de 8 dígitos.
+- Localização: Busca do CEP via ViaCEP.
+- Clima: Consulta da temperatura atual via WeatherAPI.
+- Conversão:
+- Fahrenheit = Celsius × 1.8 + 32
+- Kelvin = Celsius + 273
 
 ## Tecnologias utilizadas
 
 - Go (Golang)
-- HTTP Client
+- Docker
 - REST API
 - Swagger (documentação)
+- Google Cloud Run
+- Testes automatizados (Go testing)
 
 
-## Como executar o projeto e Clonar o repositório
+## Especificações da API
+- Cenário 1: Sucesso
+    HTTP 200
+    json { "temp_C": 28.5, "temp_F": 83.3, "temp_K": 301.65 }
 
-```bash
-git clone https://github.com/dianerieck/Multithreading-Golang
-cd seu-repo
+- Cenário 2: Falha (Formato Inválido)
+    HTTP 422
+    json { "message": "invalid zipcode" }
 
-Rodar aplicação
-go run cmd/main/main.go
-
- 
-Endpoint:
-http://localhost:8000/cep/99700088
-
-
-Swagger (Documentação da API)
-http://localhost:8000/swagger/index.html
+- Cenário 3: Falha (CEP não encontrado)
+    HTTP 404
+    json { "message": "can not find zipcode" }
 
 
-## Testes via terminal
-Teste simples
-curl http://localhost:8000/cep/99700088
+## Executando Localmente com Docker
+Bash
+   # Clonar repositório
+        git clone https://github.com/dianerieck/GoogleCloudRun
+        cd GoogleCloudRun
 
+    # Build da imagem
+        docker build -t cep-clima .
 
-# Conceitos aplicados
+    # Rodar container
+        docker run -p 8080:8080 cep-clima
 
-Concorrência em Go
-Race entre serviços externos
-Timeout controlado
-Clean architecture básica
-Separação de responsabilidades
+## Endpoint Local
+    http://localhost:8080/cep/{CEP}
 
+## Deploy no Google Cloud Run
+    A aplicação está disponível em: https://google-cloud-run-o5cyk2bmrq-uc.a.run.app/cep/99700054  
 
 # Autora
 Diane Rieck
