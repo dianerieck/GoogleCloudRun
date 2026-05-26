@@ -42,17 +42,28 @@ Bash
         git clone https://github.com/dianerieck/GoogleCloudRun
         cd GoogleCloudRun
 
+    # Crie um arquivo .env com sua API_KEY ou passe via linha de comando
+    # API_KEY=sua_chave_aqui
+
     # Build da imagem
         docker build -t cep-clima .
 
-    # Rodar container
-        docker run -p 8080:8080 cep-clima
+    # Rodar container passando a chave de API como variável de ambiente
+    # Substitua 'SUA_CHAVE' pela chave real da WeatherAPI
+    docker run -p 8080:8080 -e API_KEY=SUA_CHAVE cep-clima
 
 ## Endpoint Local
     http://localhost:8080/cep/{CEP}
 
 ## Deploy no Google Cloud Run
-    A aplicação está disponível em: https://google-cloud-run-o5cyk2bmrq-uc.a.run.app/cep/99700054  
+    A aplicação está disponível em: 
+    https://google-cloud-run-o5cyk2bmrq-uc.a.run.app/cep/99700054  
+
+### Configuração no Cloud Run
+Ao fazer o deploy, certifique-se de configurar a variável de ambiente:
+1. Vá para o Console do Cloud Run.
+2. Selecione seu serviço -> "Edit & Deploy New Revision".
+3. Na aba "Variables & Secrets", adicione `API_KEY` com o valor da sua chave.
 
 # Autora
 Diane Rieck
@@ -60,10 +71,3 @@ Diane Rieck
 # Licença
 
 Projeto para fins educacionais e estudo.
-
-
-
-
-
-
-

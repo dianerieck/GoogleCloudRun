@@ -43,7 +43,7 @@
             "description": "invalid zipcode"
           },
           "504": {
-            "description": "Timeout de 1 segundo excedido - nenhuma API respondeu a tempo"
+            "description": "Timeout de 5 segundos excedido - nenhuma API respondeu a tempo"
           }
         }
       }

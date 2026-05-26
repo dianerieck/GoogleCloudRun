@@ -3,11 +3,10 @@ package main
 import (
 	"encoding/json"
 	"log"
+	"net"
 	"net/http"
 	"os"
-	"path/filepath"
 	"regexp"
-	"strings"
 
 	_ "github.com/dianerieck/GoogleCloudRun/docs"
 	"github.com/joho/godotenv"
@@ -21,9 +20,16 @@ import (
 // Pre-compilando a regex para melhor performance
 var cepRegex = regexp.MustCompile(`^\d{8}$`)
 
+func loadEnv() {
+	for _, path := range []string{".env", "../.env", "../../.env"} {
+		_ = godotenv.Load(path)
+	}
+}
+
 func main() {
 
-	_ = godotenv.Load("../../.env")
+	// Carrega o .env se existir (útil localmente), mas não falha se estiver ausente (Cloud Run)
+	loadEnv()
 
 	apiKey := os.Getenv("API_KEY")
 	if apiKey == "" {
@@ -42,11 +48,8 @@ func main() {
 
 	r.Get("/docs/swagger.json", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		path := "./docs/swagger.json"
-		if _, err := os.Stat(path); os.IsNotExist(err) {
-			path = filepath.Join("..", "..", "docs", "swagger.json")
-		}
-		http.ServeFile(w, r, path)
+		// No Dockerfile, a pasta docs é copiada para a raiz /docs
+		http.ServeFile(w, r, "/docs/swagger.json")
 	})
 
 	r.Get("/cep/{cep}", func(w http.ResponseWriter, r *http.Request) {
@@ -65,7 +68,8 @@ func main() {
 		cidade, err := service.GetCidade(cepParam)
 		if err != nil {
 			w.Header().Set("Content-Type", "application/json")
-			if strings.Contains(err.Error(), "timeout") || strings.Contains(err.Error(), "deadline") {
+			// Verifica se o erro é de timeout de rede de forma mais robusta
+			if nErr, ok := err.(net.Error); ok && nErr.Timeout() {
 				w.WriteHeader(http.StatusGatewayTimeout)
 				json.NewEncoder(w).Encode(map[string]string{
 					"message": "Timeout de 5 segundos excedido",
@@ -82,7 +86,7 @@ func main() {
 		celsius, err := service.GetTemperatura(cidade, apiKey)
 		if err != nil {
 			w.Header().Set("Content-Type", "application/json")
-			if strings.Contains(err.Error(), "timeout") || strings.Contains(err.Error(), "deadline") {
+			if nErr, ok := err.(net.Error); ok && nErr.Timeout() {
 				w.WriteHeader(http.StatusGatewayTimeout)
 				json.NewEncoder(w).Encode(map[string]string{
 					"message": "Timeout de 5 segundos excedido - nenhuma API respondeu a tempo",

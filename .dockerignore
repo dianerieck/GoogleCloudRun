@@ -1,0 +1,7 @@
+.git
+.env
+cloudrun
+vendor/
+bin/
+obj/
+*.exe

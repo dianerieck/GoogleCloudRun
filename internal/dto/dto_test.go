@@ -7,7 +7,7 @@ func TestGetCidadeRequest(t *testing.T) {
 		Localidade: "Erechim",
 	}
 	if response.Localidade != "Erechim" {
-		t.Errorf("Expected Localidade to be 'Ereckim', got '%s'", response.Localidade)
+		t.Errorf("Expected Localidade to be 'Erechim', got '%s'", response.Localidade)
 	}
 	response2 := &WeatherResponse{
 		Current: struct {
@@ -17,7 +17,7 @@ func TestGetCidadeRequest(t *testing.T) {
 		},
 	}
 	if response2.Current.Temp_C != 20 {
-		t.Errorf("Expected Temp_C to be 0, got '%f'", response2.Current.Temp_C)
+		t.Errorf("Expected Temp_C to be 20, got '%f'", response2.Current.Temp_C)
 	}
 
 }

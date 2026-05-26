@@ -5,6 +5,7 @@
 *.so
 *.dylib
 bin/
+cloudrun
 
 # Configurações sensíveis
 .env
